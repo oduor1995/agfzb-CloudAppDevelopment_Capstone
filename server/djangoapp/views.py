@@ -52,3 +52,10 @@ def get_dealerships(request):
 # def add_review(request, dealer_id):
 # ...
 
+def about_view(request):
+    # Add logic for rendering about us page here
+    return render(request, 'about.html')
+
+def contact_view(request):
+    # Add logic for rendering contact us page here
+    return render(request, 'contact.html')
