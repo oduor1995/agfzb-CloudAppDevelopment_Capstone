@@ -9,6 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -59,3 +60,30 @@ def about_view(request):
 def contact_view(request):
     # Add logic for rendering contact us page here
     return render(request, 'contact.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('djangoapp:index')  # Redirect to index view or any other view
+        else:
+            messages.error(request, 'Invalid username or password.')  # Display error message
+    form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('djangoapp:index')  # Redirect to index view or any other view
+    form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
+def signout_view(request):
+    logout(request)
+    return redirect('djangoapp:index')  # Redirect to index view or any other view
