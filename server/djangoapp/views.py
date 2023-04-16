@@ -10,6 +10,8 @@ from datetime import datetime
 import logging
 import json
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+import requests
+from .models import  CarDealer
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -39,10 +41,22 @@ logger = logging.getLogger(__name__)
 # ...
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
+
+
+
 def get_dealerships(request):
-    context = {}
     if request.method == "GET":
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/cf0035e1-499c-464f-9ca1-9e3d938b50ce/dealership-package/get-dealership"
+        # Call get_dealers_from_cf function to get dealerships
+        dealerships = get_dealers_from_cf(url)
+        # Create a list of dealer_names as rows for the table
+        dealer_names = [dealer.short_name for dealer in dealerships]
+        # Update the context dictionary with the dealer_names
+        context = {'dealer_names': dealer_names}
+        # Render the 'djangoapp/index.html' template with the updated context dictionary
         return render(request, 'djangoapp/index.html', context)
+
+
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
@@ -87,3 +101,36 @@ def signup_view(request):
 def signout_view(request):
     logout(request)
     return redirect('djangoapp:index')  # Redirect to index view or any other view
+
+def get_dealers_from_cf(url):
+    # Make REST call to review-get cloud function service
+    response = requests.get(url)
+
+    # Check if the response is successful
+    if response.status_code == 200:
+        # Load JSON results into a list
+        json_results = response.json()
+
+        # Create a list to store CarDealer objects
+        dealers = []
+
+        # Loop through the JSON results and create CarDealer objects
+        for result in json_results:
+            dealer = CarDealer(
+                address=result['address'],
+                city=result['city'],
+                full_name=result['full_name'],
+                id=result['id'],
+                lat=result['lat'],
+                long=result['long'],
+                short_name=result['short_name'],
+                st=result['st'],
+                zip=result['zip']
+            )
+            dealers.append(dealer)
+
+        return dealers
+    else:
+        # Handle the response if it's not successful
+        # e.g. return an empty list or raise an exception
+        return []
