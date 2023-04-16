@@ -2,8 +2,10 @@ import requests
 import json
 # import related models here
 from requests.auth import HTTPBasicAuth
+from typing import List
+from .models import DealerReview
  
- def get_request(url, **kwargs):
+def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
     try:
@@ -64,6 +66,27 @@ def get_dealers_from_cf(url, **kwargs):
             results.append(dealer_obj)
 
     return results
+
+def get_dealer_reviews_from_cf(dealer_id):
+    # Make an API request to get dealer reviews
+    response = requests.get(f'https://us-south.functions.appdomain.cloud/api/v1/web/cf0035e1-499c-464f-9ca1-9e3d938b50ce/dealership-package/review/{dealer_id}/')
+
+    # Check if the response is successful
+    if response.status_code == 200:
+        # Check if the response content is not empty
+        if response.content:
+            # Convert the response to JSON and return it
+            json_result = response.json()
+            return json_result
+        else:
+            # Handle empty response content
+            print("Empty response content")
+    else:
+        # Handle unsuccessful response
+        print(f"Failed to get dealer reviews. Status code: {response.status_code}")
+
+    # Return None if there was an error
+    return None
 
 
 

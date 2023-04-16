@@ -12,12 +12,24 @@ import json
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 import requests
 from .models import  CarDealer
+from .restapis import get_dealer_reviews_from_cf
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
 # Create your views here.
+def get_dealer_details(request, dealer_id):
+    # Call get_dealer_reviews_from_cf method in restapis.py
+    reviews = get_dealer_reviews_from_cf(dealer_id)
+
+    # Append the list of reviews to the context
+    context = {
+        'reviews': reviews,
+    }
+
+    # Return a HttpResponse
+    return render(request, 'dealer_details.html', context)
 
 
 # Create an `about` view to render a static about page

@@ -4,6 +4,7 @@ from django.conf import settings
 from . import views
 from .views import signup_view
 from .views import signout_view
+from .views import get_dealer_details
 
 app_name = 'djangoapp'
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
 
     path(route='', view=views.get_dealerships, name='index'),
     path('signout/', views.signout_view, name='signout'),
+    path('dealerreview/<int:dealer_id>/', get_dealer_details, name='dealer_details'),
 
     # path for dealer reviews view
 
