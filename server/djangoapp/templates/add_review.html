@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Review</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: #f8f8f8;
+        padding: 20px;
+      }
+      h1 {
+        margin-bottom: 20px;
+      }
+      form {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      form div {
+        margin-bottom: 10px;
+      }
+      form label {
+        display: inline-block;
+        width: 120px;
+      }
+      form textarea {
+        width: 100%;
+        height: 100px;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+      }
+      form input[type="checkbox"] {
+        margin-left: 10px;
+      }
+      form button[type="submit"] {
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      form button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Add Review</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <div>
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" required>
+      </div>
+      <div>
+        <label for="dealership">Dealership:</label>
+        <input type="text" name="dealership" required>
+      </div>
+      <div>
+        <label for="review">Review:</label>
+        <textarea name="review" required></textarea>
+      </div>
+      <div>
+        <label for="purchase">Purchased:</label>
+        <input type="checkbox" name="purchase">
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
+
+
+
+

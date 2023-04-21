@@ -13,13 +13,16 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 import requests
 from .models import  CarDealer
 from .restapis import get_dealer_reviews_from_cf
+from .restapis import post_request
+from django.urls import reverse
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
 # Create your views here.
-def get_dealer_details(request, dealer_id):
+def  get_dealer_details(request, dealer_id):
     # Call get_dealer_reviews_from_cf method in restapis.py
     reviews = get_dealer_reviews_from_cf(dealer_id)
 
@@ -146,3 +149,17 @@ def get_dealers_from_cf(url):
         # Handle the response if it's not successful
         # e.g. return an empty list or raise an exception
         return []
+
+def add_review(request, dealer_id):
+    if request.method == "POST":
+        review = {}
+        review["time"] = datetime.utcnow().isoformat()
+        review["name"] = request.user.username
+        review["dealership"] = dealer_id
+        review["review"] = request.POST.get("review", "")
+        review["purchase"] = request.POST.get("purchase", False)
+        json_payload = {"review": review}
+        url = 'https://us-south.functions.appdomain.cloud/api/v1/web/cf0035e1-499c-464f-9ca1-9e3d938b50ce/dealership-package/post_review'
+        post_request(url, json_payload, dealerId=dealer_id)
+    return render(request, "add_review.html", {"dealer_id": dealer_id})
+

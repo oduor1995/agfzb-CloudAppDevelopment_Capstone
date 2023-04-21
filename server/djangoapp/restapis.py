@@ -87,6 +87,9 @@ def get_dealer_reviews_from_cf(dealer_id):
 
     # Return None if there was an error
     return None
+def post_request(url, json_payload, **kwargs):
+    response = requests.post(url, params=kwargs, json=json_payload)
+    return response.json()    
 
 
 

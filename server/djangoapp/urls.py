@@ -5,6 +5,7 @@ from . import views
 from .views import signup_view
 from .views import signout_view
 from .views import get_dealer_details
+from . import views
 
 app_name = 'djangoapp'
 urlpatterns = [
@@ -25,7 +26,8 @@ urlpatterns = [
 
     path(route='', view=views.get_dealerships, name='index'),
     path('signout/', views.signout_view, name='signout'),
-    path('dealerreview/<int:dealer_id>/', get_dealer_details, name='dealer_details'),
+    path('dealer/<int:dealer_id>/', views.get_dealer_details, name=' get_dealer_details'),
+    path("dealer/<int:dealer_id>/add_review", views.add_review, name="add_review"),
 
     # path for dealer reviews view
 
