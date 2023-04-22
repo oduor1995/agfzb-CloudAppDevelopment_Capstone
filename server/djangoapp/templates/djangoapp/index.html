@@ -56,24 +56,35 @@
         </ul>
     </nav>
 
-    <table class="table">
-        <thead
-        <body>
-            <!-- Navbar code -->
+    <table class="table" data-toggle="table" data-filter-control="true" data-sortable="true">
+        <thead>
+            <tr>
+                <th data-field="id" data-filter-control="input" data-sortable="true">ID</th>
+                <th data-field="name" data-filter-control="input" data-sortable="true">Name</th>
+                <th data-field="city" data-filter-control="input" data-sortable="true">City</th>
+                <th data-field="address" data-filter-control="input" data-sortable="true">Address</th>
+                <th data-field="zip" data-filter-control="input" data-sortable="true">Zip</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dealer in dealer_data %}
+            <tr>
+                <td>{{ dealer.id }}</td>
+                <td><a href="{% url 'djangoapp:get_dealer_details' dealer.id %}">{{ dealer.name }}</a></td>
+                <td>{{ dealer.city }}</td>
+                <td>{{ dealer.address }}</td>
+                <td>{{ dealer.zip }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    
+</div>
+</body>
+</html>  
+
         
-            <!-- Rest of your template code -->
-        
-            <div class="container">
-                <!-- Displaying context data -->
-                <h1>Dealer Names</h1>
-                <ul>
-                    {% for dealer_name in dealer_names %}
-                    <li>{{ dealer_name }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </body>
-        </html>
         
 
 

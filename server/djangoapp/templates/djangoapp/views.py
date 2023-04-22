@@ -173,4 +173,3 @@ def add_review(request, dealer_id):
         url = 'https://us-south.functions.appdomain.cloud/api/v1/web/cf0035e1-499c-464f-9ca1-9e3d938b50ce/dealership-package/post_review'
         post_request(url, json_payload, dealerId=dealer_id)
     return render(request, "add_review.html", {"dealer_id": dealer_id})
-
